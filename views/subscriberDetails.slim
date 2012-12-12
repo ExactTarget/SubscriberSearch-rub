@@ -1,0 +1,29 @@
+dl
+ dt
+  |Email
+ dd
+  = @EmailAddress
+ dt
+  |Subscriber Key
+ dd
+  = @SubscriberKey
+ dt
+  |Created
+ dd
+  = @CreatedDate
+ dt
+  |Status
+
+div id="statusCombo" class="input-append dropdown combobox" style="width: 80%; margin-top: 0;"
+ input class="span2" style="width: 50%;" id="statusValue" type="text" value="#{@Status}"
+  button class="btn" data-toggle="dropdown"
+   i class="caret"
+ ul class="dropdown-menu"
+  li
+   a href="#"
+    |Active
+  li
+   a href="#"
+    |Unsubscribed
+ button class="btn btn-primary pull-right saveStatus" id="#{@id}"
+  |Update Status

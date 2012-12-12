@@ -1,0 +1,43 @@
+table id="subscriberGrid" class="table table-bordered datagrid"
+ thead
+  tr
+   th
+    span class="datagrid-header-title" = @gridTitle
+    div class="datagrid-header-left"
+    div class="datagrid-header-right"
+     div id="subscriberSearch" class="input-append search"
+      input type="text" class="input-medium" placeholder="#{@searchPlaceholder}"
+       button class="btn"
+        i class="icon-search"
+ tfoot
+  tr
+   th
+    div class="datagrid-footer-left" style="display: none;"
+     div class="grid-controls"
+      span
+       span class="grid-start" 
+       |  - 
+       span class="grid-end" 
+       |  of 
+       span class="grid-count"
+      select class="grid-pagesize"
+       option 10
+       option 20
+       option 50
+      span
+       |Per Page
+    div class="datagrid-footer-right" style="display:none;"
+     div class="grid-pager"
+      button class="btn grid-prevpage" 
+       i class="icon-chevron-left"
+      span  Page 
+      div class="input-append dropdown combobox"
+       input class="span1" type="text"
+        button class="btn" data-toggle="dropdown"
+         i class="caret"
+       ul class="dropdown-menu"
+      span 
+       | of 
+       span class="grid-pages" 
+      button class="btn grid-nextpage"
+       i class="icon-chevron-right"
