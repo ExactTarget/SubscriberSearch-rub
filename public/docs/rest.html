@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>rest.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source" href="init.html">init.rb</a>
+          <a class="source" href="rest.html">rest.rb</a>
+          <a class="source" href="../models/init.html">init.rb</a>
+          <a class="source" href="../models/subscriber.html">subscriber.rb</a>
+          <a class="source" href="../routes/init.html">init.rb</a>
+          <a class="source" href="../routes/main.html">main.rb</a>
+      </div>
+    </div>
+  </div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>rest.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        <p>get<em>soap</em>route is used to retrieve the SOAP end point required for all SOAP interaction.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">def</span> <span class="nf">get_soap_route</span>
+  <span class="n">update_token</span>
+  <span class="n">res</span> <span class="o">=</span> <span class="no">RestClient</span><span class="o">.</span><span class="n">get</span> <span class="s1">&#39;https://www.exacttargetapis.com/platform/v1/endpoints/soap?access_token=&#39;</span> <span class="o">+</span> <span class="n">settings</span><span class="o">.</span><span class="n">oauthToken</span>
+  <span class="vi">@res</span> <span class="o">=</span> <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+  <span class="vi">@results</span> <span class="o">=</span> <span class="no">JSON</span><span class="o">.</span><span class="n">pretty_generate</span><span class="p">(</span><span class="vi">@res</span><span class="p">)</span>
+  <span class="n">settings</span><span class="o">.</span><span class="n">soapURI</span> <span class="o">=</span> <span class="vi">@res</span><span class="o">[</span><span class="s2">&quot;url&quot;</span><span class="o">]</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>update_token determine if the oAuth token is near/past expiration, and renews the token if required.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">def</span> <span class="nf">update_token</span>
+  <span class="nb">require</span> <span class="s1">&#39;date&#39;</span>
+  <span class="n">til</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span> <span class="o">-</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
+  <span class="n">left</span> <span class="o">=</span> <span class="p">(</span><span class="n">til</span><span class="o">/</span><span class="mi">60</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span>
+  <span class="nb">p</span> <span class="n">left</span>
+  <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="mi">5</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="no">RestClient</span><span class="o">.</span><span class="n">post</span><span class="p">(</span> <span class="s2">&quot;https://auth.exacttargetapis.com/v1/requestToken&quot;</span><span class="p">,</span>
+                <span class="p">{</span>
+                <span class="ss">:clientId</span> <span class="o">=&gt;</span> <span class="n">settings</span><span class="o">.</span><span class="n">clientId</span><span class="p">,</span>
+                <span class="ss">:clientSecret</span> <span class="o">=&gt;</span> <span class="n">settings</span><span class="o">.</span><span class="n">clientSecret</span><span class="p">,</span>
+                <span class="ss">:refreshToken</span> <span class="o">=&gt;</span> <span class="n">settings</span><span class="o">.</span><span class="n">refreshToken</span><span class="p">,</span>
+                <span class="ss">:accessType</span> <span class="o">=&gt;</span> <span class="s2">&quot;offline&quot;</span>
+                <span class="p">})</span>
+    <span class="vi">@res</span> <span class="o">=</span> <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">oauthToken</span> <span class="o">=</span> <span class="vi">@res</span><span class="o">[</span><span class="s2">&quot;accessToken&quot;</span><span class="o">]</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">exp</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="o">+</span> <span class="vi">@res</span><span class="o">[</span><span class="s2">&quot;expiresIn&quot;</span><span class="o">]</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">refreshToken</span> <span class="o">=</span> <span class="vi">@res</span><span class="o">[</span><span class="s2">&quot;refreshToken&quot;</span><span class="o">]</span>
+  <span class="k">end</span>	
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>get_keys uses the JWT to get all required tokens, and stores them inside the app config settings in app.rb</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">def</span> <span class="nf">get_keys</span><span class="p">(</span><span class="n">jwt</span><span class="p">)</span>
+    <span class="nb">p</span> <span class="s1">&#39;Setting the keys&#39;</span>
+    <span class="vi">@decodedJWT</span> <span class="o">=</span> <span class="no">JWT</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">jwt</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="kp">false</span><span class="p">)</span>
+    <span class="vi">@jwtJSON</span> <span class="o">=</span> <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="vi">@decodedJWT</span><span class="o">.</span><span class="n">to_json</span><span class="p">)</span> 
+    <span class="n">settings</span><span class="o">.</span><span class="n">oauthToken</span> <span class="o">=</span> <span class="vi">@jwtJSON</span><span class="o">[</span><span class="s2">&quot;request&quot;</span><span class="o">][</span><span class="s2">&quot;user&quot;</span><span class="o">][</span><span class="s2">&quot;oauthToken&quot;</span><span class="o">]</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">internalOauthToken</span> <span class="o">=</span> <span class="vi">@jwtJSON</span><span class="o">[</span><span class="s2">&quot;request&quot;</span><span class="o">][</span><span class="s2">&quot;user&quot;</span><span class="o">][</span><span class="s2">&quot;internalOauthToken&quot;</span><span class="o">]</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">refreshToken</span> <span class="o">=</span> <span class="vi">@jwtJSON</span><span class="o">[</span><span class="s2">&quot;request&quot;</span><span class="o">][</span><span class="s2">&quot;user&quot;</span><span class="o">][</span><span class="s2">&quot;refreshToken&quot;</span><span class="o">]</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">jwt</span> <span class="o">=</span> <span class="n">jwt</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">exp</span> <span class="o">=</span> <span class="vi">@jwtJSON</span><span class="o">[</span><span class="s2">&quot;exp&quot;</span><span class="o">]</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

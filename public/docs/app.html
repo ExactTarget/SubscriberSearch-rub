@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>app.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>app.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="nb">require</span> <span class="s2">&quot;sinatra&quot;</span>
+<span class="nb">require</span> <span class="s2">&quot;slim&quot;</span>
+<span class="nb">require</span> <span class="s2">&quot;jwt&quot;</span>
+<span class="nb">require</span> <span class="s2">&quot;json&quot;</span>
+<span class="nb">require</span> <span class="s1">&#39;rest_client&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;savon&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;date&#39;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>Configuration requirements used by the app.</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">configure</span> <span class="k">do</span>
+ <span class="n">set</span> <span class="ss">:appSig</span><span class="p">,</span> <span class="s1">&#39;p1dltvkuesxjmcktminrhinxyuxonn0yc2e0houqjoobkzuo4tiubaap2dqyve5rjyvr3ukhkhxa5pti3oubdfkmxlxbjweslhidhnckayaue3nor0visibfssjc44jiyw2utnp20lgyafczeqcsw5ijr3yyjwwj1rdbd2qjovavuaaftvsp503l1dqxaro23vaozawfp4hbw0en1aoygdmortohhw5nk1o1yoxcrezxuoq4nehsblplbtvlowt&#39;</span>
+ <span class="n">set</span> <span class="ss">:clientId</span><span class="p">,</span> <span class="s1">&#39;96tpxhqp4cp6fhvebvw73dzw&#39;</span>
+ <span class="n">set</span> <span class="ss">:clientSecret</span><span class="p">,</span> <span class="s1">&#39;ZfFNf96jcUrDBeMpqjpWByNp&#39;</span>
+ <span class="n">set</span> <span class="ss">:oauthToken</span><span class="p">,</span> <span class="kp">nil</span>
+ <span class="n">set</span> <span class="ss">:internalOauthToken</span><span class="p">,</span> <span class="kp">nil</span>
+ <span class="n">set</span> <span class="ss">:refreshToken</span><span class="p">,</span> <span class="kp">nil</span>
+ <span class="n">set</span> <span class="ss">:jwt</span><span class="p">,</span> <span class="kp">nil</span>
+ <span class="n">set</span> <span class="ss">:soapURI</span><span class="p">,</span> <span class="kp">nil</span>
+ <span class="n">set</span> <span class="ss">:exp</span><span class="p">,</span> <span class="kp">nil</span>
+ <span class="n">set</span> <span class="ss">:wsdl</span><span class="p">,</span> <span class="s2">&quot;https://webservice.s4.exacttarget.com/ETFramework.wsdl&quot;</span>
+<span class="k">end</span>
+
+
+<span class="k">class</span> <span class="nc">SubscriberSearch</span> <span class="o">&lt;</span> <span class="no">Sinatra</span><span class="o">::</span><span class="no">Application</span>
+  <span class="n">enable</span> <span class="ss">:sessions</span>
+<span class="k">end</span>
+
+<span class="n">require_relative</span> <span class="s1">&#39;helpers/init&#39;</span>
+<span class="n">require_relative</span> <span class="s1">&#39;models/init&#39;</span>
+<span class="n">require_relative</span> <span class="s1">&#39;routes/init&#39;</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

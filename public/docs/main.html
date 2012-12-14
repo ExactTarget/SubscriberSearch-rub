@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>main.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source" href="../helpers/init.html">init.rb</a>
+          <a class="source" href="../helpers/rest.html">rest.rb</a>
+          <a class="source" href="../models/init.html">init.rb</a>
+          <a class="source" href="../models/subscriber.html">subscriber.rb</a>
+          <a class="source" href="init.html">init.rb</a>
+          <a class="source" href="main.html">main.rb</a>
+      </div>
+    </div>
+  </div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>main.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  
+<span class="k">class</span> <span class="nc">SubscriberSearch</span> <span class="o">&lt;</span> <span class="no">Sinatra</span><span class="o">::</span><span class="no">Application</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>Main route to show application. This gets the SOAP route, and displays the main template.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="n">get</span> <span class="s2">&quot;/&quot;</span> <span class="k">do</span>
+    <span class="nb">p</span> <span class="n">settings</span><span class="o">.</span><span class="n">oauthToken</span>
+    <span class="nb">p</span> <span class="n">settings</span><span class="o">.</span><span class="n">internalOauthToken</span>
+    <span class="nb">p</span> <span class="n">settings</span><span class="o">.</span><span class="n">refreshToken</span>
+    <span class="nb">p</span> <span class="n">settings</span><span class="o">.</span><span class="n">jwt</span>
+    <span class="nb">p</span> <span class="n">settings</span><span class="o">.</span><span class="n">exp</span>
+    <span class="n">get_soap_route</span>
+    <span class="vi">@title</span> <span class="o">=</span> <span class="s2">&quot;Subscriber Search&quot;</span>
+    <span class="n">slim</span> <span class="ss">:main</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>Login initializes the app, and sets all keys to be used.  This is the first page called by the IMH.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="n">post</span> <span class="s2">&quot;/login&quot;</span> <span class="k">do</span>
+    <span class="n">get_keys</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:jwt</span><span class="o">]</span><span class="p">)</span>
+    <span class="n">redirect</span> <span class="s1">&#39;/&#39;</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-4">&#182;</a>
+        </div>
+        <p>Currently unused &ndash; but this would be used to clean up anything on logout.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  
+  <span class="n">post</span> <span class="s2">&quot;/logout&quot;</span> <span class="k">do</span>
+
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-5'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-5">&#182;</a>
+        </div>
+        <p>/subscribers route returns all subscribers or filters based on search box, and returns them to the datasource.js for the data grid.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  
+  <span class="n">get</span> <span class="s2">&quot;/subscribers&quot;</span> <span class="k">do</span>
+    <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="s1">&#39;searchString&#39;</span><span class="o">]</span>
+    <span class="vi">@result</span> <span class="o">=</span> <span class="n">get_subscribers</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="s1">&#39;searchString&#39;</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">to_json</span>
+    <span class="k">else</span>
+    <span class="vi">@result</span> <span class="o">=</span> <span class="n">get_subscribers</span><span class="o">.</span><span class="n">to_json</span>
+    <span class="k">end</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-6'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-6">&#182;</a>
+        </div>
+        <p>/subscriber/:id route gets a specific subscriber and returns the data to the subscriberDetail template.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  
+  <span class="n">get</span> <span class="s2">&quot;/subscriber/:id&quot;</span> <span class="k">do</span>
+    <span class="nb">sub</span> <span class="o">=</span> <span class="n">get_subscriber_by_id</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+    <span class="nb">sub</span> <span class="o">=</span> <span class="nb">sub</span><span class="o">[</span><span class="ss">:subscriber</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span>
+    <span class="vi">@EmailAddress</span> <span class="o">=</span> <span class="nb">sub</span><span class="o">[</span><span class="ss">:EmailAddress</span><span class="o">]</span>
+    <span class="vi">@SubscriberKey</span> <span class="o">=</span> <span class="nb">sub</span><span class="o">[</span><span class="ss">:SubscriberKey</span><span class="o">]</span>
+    <span class="vi">@CreatedDate</span> <span class="o">=</span> <span class="nb">sub</span><span class="o">[</span><span class="ss">:CreatedDate</span><span class="o">]</span>
+    <span class="vi">@Status</span> <span class="o">=</span> <span class="nb">sub</span><span class="o">[</span><span class="ss">:Status</span><span class="o">]</span>
+    <span class="vi">@id</span> <span class="o">=</span> <span class="nb">sub</span><span class="o">[</span><span class="ss">:ID</span><span class="o">]</span>
+    <span class="n">slim</span> <span class="ss">:subscriberDetails</span><span class="p">,</span> <span class="ss">:layout</span> <span class="o">=&gt;</span> <span class="kp">false</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-7'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-7">&#182;</a>
+        </div>
+        <p>/subscriber/update/:id/:status takes the ID and Status of a subscriber and runs the update SOAP call.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  
+  <span class="n">get</span> <span class="s2">&quot;/subscriber/update/:id/:status&quot;</span> <span class="k">do</span>
+    <span class="vi">@result</span> <span class="o">=</span> <span class="n">update_subscriber</span><span class="p">(</span> <span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">,</span> <span class="n">params</span><span class="o">[</span><span class="ss">:status</span><span class="o">]</span> <span class="p">)</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-8'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-8">&#182;</a>
+        </div>
+        <p>sidebar runs the sidebar template code in the Main template.    </p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nf">sidebar</span>
+    <span class="vi">@SidebarTitle</span> <span class="o">=</span> <span class="s2">&quot;Subscriber Details&quot;</span>
+    <span class="n">slim</span> <span class="ss">:sidebar</span><span class="p">,</span> <span class="ss">:layout</span> <span class="o">=&gt;</span> <span class="kp">false</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-9'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-9">&#182;</a>
+        </div>
+        <p>grid runs the grid template inside the main template.</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  
+  <span class="k">def</span> <span class="nf">grid</span>
+    <span class="vi">@gridTitle</span> <span class="o">=</span> <span class="s2">&quot;Subscriber Listings&quot;</span>
+    <span class="vi">@searchPlaceholder</span> <span class="o">=</span> <span class="s2">&quot;Search for Subscribers&quot;</span>
+    <span class="n">slim</span> <span class="ss">:grid</span><span class="p">,</span> <span class="ss">:layout</span> <span class="o">=&gt;</span> <span class="kp">false</span>
+  <span class="k">end</span>
+  
+
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
