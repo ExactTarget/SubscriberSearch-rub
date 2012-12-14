@@ -19,7 +19,7 @@ class SubscriberSearch < Sinatra::Application
 
 	post "/login" do
 		get_keys(params[:jwt])
-		redirect '/'
+		redirect to('/')
 	end
 
 #Currently unused - but this would be used to clean up anything on logout.

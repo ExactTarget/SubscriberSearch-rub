@@ -20,6 +20,9 @@ configure do
  set :soapURI, nil
  set :exp, nil
  set :wsdl, "https://webservice.s4.exacttarget.com/ETFramework.wsdl"
+ 
+ set :protection, :except => :frame_options
+ 
 end
 
 
