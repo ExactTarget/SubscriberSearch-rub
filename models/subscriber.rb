@@ -84,33 +84,6 @@ class ETWSDL
 				
 		end
 	end
-
-#Update initializes the SOAP client, and accepts an argument object to 
-	
-	def self.update (args = {})
-	
-		
-		args[:objType] ||= 'Subscriber'
-
-			client = SoapClient.client
-			
-			response =  client.request :update  do |soap|
-			soap.header = SoapClient.auth(args[:token])
-			
-			soap.input = [
-				("tns:UpdateRequest")
-			]
-			
-#Complete the update body of the SOAP packet.
-			
-			soap.body = {
-					'Options/' => nil,
-					'Objects' => args[:objects],
-					:attributes! => {'Objects' => { 'xsi:type' => 'tns:'+args[:objType] } }
-					}
-						
-		end
-	end
 	 
 end
 
@@ -136,36 +109,6 @@ def get_subscribers ( filter = nil )
 
 end
 
-#get_subscriber_by_id returns the detail information about a specific subscriber.
-
-def get_subscriber_by_id ( filter = nil )
-	
-#Only returns a result if there is a filter passed.
-
-		unless filter == nil
-			filterHash = {'Property' => 'ID', 'SimpleOperator' => 'equals', 'Value' => filter}
-			args={}
-			args[:filter] = filterHash
-			args[:token] = settings.internalOauthToken
-
-#Call format_response to return a usable hash with the exact information		
-			return format_response(ETWSDL.retrieve(args).to_hash)
-		end
-
-end
-
-#update_subscriber takes the id of a specific subscriber, and changes the status based on the input.
-
-def update_subscriber ( id, status )
-
-		objectHash = {'ID' => id , 'Status' => status}
-		args = {}
-		args[:token] = settings.internalOauthToken
-		args[:objects] = objectHash
-
-		return ETWSDL.update(args).to_hash
-	
-end
 
 #format_response takes the SOAP packet and cleans it up for consumption - this isn't required, but makes things easier on the client side.
 def format_response (response)
