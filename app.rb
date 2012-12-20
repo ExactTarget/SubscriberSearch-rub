@@ -10,9 +10,9 @@ require 'date'
 
 #Configuration requirements used by the app.
 configure do
- set :appSig, 'p1dltvkuesxjmcktminrhinxyuxonn0yc2e0houqjoobkzuo4tiubaap2dqyve5rjyvr3ukhkhxa5pti3oubdfkmxlxbjweslhidhnckayaue3nor0visibfssjc44jiyw2utnp20lgyafczeqcsw5ijr3yyjwwj1rdbd2qjovavuaaftvsp503l1dqxaro23vaozawfp4hbw0en1aoygdmortohhw5nk1o1yoxcrezxuoq4nehsblplbtvlowt'
- set :clientId, '96tpxhqp4cp6fhvebvw73dzw'
- set :clientSecret, 'ZfFNf96jcUrDBeMpqjpWByNp'
+ set :appSig, 'YOUR APP SIG HERE'
+ set :clientId, 'YOUR CLIENT ID HERE'
+ set :clientSecret, 'YOUR CLIENT SECRET HERE'
  set :oauthToken, nil
  set :internalOauthToken, nil
  set :refreshToken, nil

@@ -34,7 +34,7 @@ end
 
 def get_keys(jwt)
 		p 'Setting the keys'
-		@decodedJWT = JWT.decode(jwt.to_s,nil,false)
+		@decodedJWT = JWT.decode(jwt.to_s,nil,settings.appSig)
 		@jwtJSON = JSON.parse(@decodedJWT.to_json) 
 		settings.oauthToken = @jwtJSON["request"]["user"]["oauthToken"]
 		settings.internalOauthToken = @jwtJSON["request"]["user"]["internalOauthToken"]
