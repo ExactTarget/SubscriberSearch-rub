@@ -1,7 +1,11 @@
 div style="padding:20px"
  h3
-  REST Results
+  |Encoded JWT
  pre
-  = @results
+  = settings.jwt
+ h3
+  |Decoded JWT
+ pre
+  = JSON.pretty_generate(@jwtJSON)
 
   

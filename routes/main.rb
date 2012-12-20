@@ -5,7 +5,7 @@ class SubscriberSearch < Sinatra::Application
 #Main route to show application. This gets the SOAP route, and displays the main template.
 
 	get "/" do
-		get_soap_route
+		get_keys(settings.jwt)
 		@title = "Subscriber Search"
 		slim :main
 	end
@@ -13,7 +13,7 @@ class SubscriberSearch < Sinatra::Application
 #Login initializes the app, and sets all keys to be used.  This is the first page called by the IMH.
 
 	post "/login" do
-		get_keys(params[:jwt])
+		settings.jwt = (params[:jwt])
 		redirect to('/')
 	end
 

@@ -46,7 +46,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  httpi
   json
   jwt
   rest-client
