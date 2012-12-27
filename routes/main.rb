@@ -5,11 +5,6 @@ class SubscriberSearch < Sinatra::Application
 #Main route to show application. This gets the SOAP route, and displays the main template.
 
 	get "/" do
-		p settings.oauthToken
-		p settings.internalOauthToken
-		p settings.refreshToken
-		p settings.jwt
-		p settings.exp
 		get_soap_route
 		@title = "Subscriber Search"
 		slim :main
