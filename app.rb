@@ -10,7 +10,7 @@ require 'date'
 
 #Configuration requirements used by the app.
 configure do
- set :appSig, 'YOUR APP SIGNATURE HERE'
+ set :appSig, 'YOUR APP SIG HERE'
  set :clientId, 'YOUR CLIENT ID HERE'
  set :clientSecret, 'YOUR CLIENT SECRET HERE'
  set :oauthToken, nil
