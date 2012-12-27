@@ -71,7 +71,12 @@
 		var page = options.pageIndex + 1;
 		var start = startIndex + 1;						
 		data = results.slice(startIndex, endIndex);
-				
+		
+		$.each(data, function( index, item ) {
+			
+			item.ViewDetails = '<button type="button" class="btn btn-primary viewDetails" id="' + item.ID + '">View Details</button>';
+		});						
+		
 		if (self._formatter) self._formatter(data);
 		callback({ data: data, start: start, end: end, count: count, pages: pages, page: page });
 	}
